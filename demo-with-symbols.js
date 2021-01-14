@@ -1,9 +1,10 @@
 /**
  * demo.js
  *
- * This is a template for how readex will work in JavaScript, and a proof of
- * concept for how it can improve a hard to read regex. The current goal of
- * this project should be to get this demo working.
+ * This is an alternate demo that partially abandons the goal of verbosity in
+ * favor of brevity. Common operations use similar syntax to normal regular
+ * expressions, except operations are prefixed rather than postfixed and some
+ * symbols are changed.
  */
 
 import readex from "./src"
@@ -13,25 +14,23 @@ const originalEmailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/
 
 // [a-z0-9!#$%&'*+/=?^_`{|}~-]+
 const unquotedNameSegment = readex`
-    repeat1Plus(
-        oneCharOf(
-            "a"-"z"
-            "0"-"9"
-            "\`"  // Could also use the word backtick
-            "!#$%&'*+/=?^_{|}~-"
-        )
-    )
+    1+[
+        "a"-"z"
+        "0"-"9"
+        "\`"  // Could also use the word backtick
+        "!#$%&'*+/=?^_{|}~-"
+    ]
 `
 
 // [a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*
 const unquotedName = readex`
-    ${unquotedNameSegment} repeat0Plus("." ${unquotedNameSegment})
+    ${unquotedNameSegment} *("." ${unquotedNameSegment})
 `
 
 // "(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*"
 const quotedName = readex`
-    '"' repeat0Plus(
-        | group(
+    '"' *(
+        | (
             | "\x01"-"\x08"
             | "\x0b"-"\x0c"
             | "\x0e"-"\x1f"
@@ -40,7 +39,7 @@ const quotedName = readex`
             | "\x5d"-"\x7f"
           )
         | "\\"  // Could also use the word backslash
-          group(
+          (
             | "\x01"-"\x09"
             | "\x0b"-"\x0c"
             | "\x0e"-"\x7f"
@@ -56,22 +55,22 @@ const alphanumeric = readex`"a"-"z" | "0"-"9"`
 
 // [a-z0-9](?:[a-z0-9-]*[a-z0-9])?
 // const domainSegment = readex`
-//     ${alphanumeric} optional(repeat0Plus(${alphanumeric} "-") ${alphanumeric})
+//     ${alphanumeric} ?(*(${alphanumeric} "-") ${alphanumeric})
 // `
 // or more streamlined:
-const domainSegment = readex`${alphanumeric} repeat0Plus("-" ${alphanumeric})`
+const domainSegment = readex`${alphanumeric} *("-" ${alphanumeric})`
 
 // (?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?
-const domain = readex`repeat1Plus(${domainSegment} ".") ${domainSegment}`
+const domain = readex`1+(${domainSegment} ".") ${domainSegment}`
 
 // (?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))
 // const ipSegment = readex`
-//     | "2" group(
+//     | "2" (
 //         | "5"     "0"-"5"
 //         | "0"-"4" "0"-"9"
 //       )
 //     | "1" "0"-"9" "0"-"9"
-//     | optional("1"-"9") "0"-"9"
+//     | ?("1"-"9") "0"-"9"
 // `
 // or simpler:
 const ipNumber = readex`
@@ -84,15 +83,15 @@ const ipNumber = readex`
 
 // (?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+
 const ipHexText = readex`
-    repeat1Plus(
-        | group(
+    1+(
+        | (
             | "\x01"-"\x08"
             | "\x0b"-"\x0c"
             | "\x0e"-"\x1f"
             | "\x21"-"\x5a"
             | "\x53"-"\x7f"
           )
-        | "\\" group(
+        | "\\" (
             | "\x01"-"\x09"
             | "\x0b"-"\x0c"
             | "\x0e"-"\x7f"
@@ -103,8 +102,8 @@ const ipHexText = readex`
 // \[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\]
 const ip = readex`
     "["
-    repeatN(3, ${ipNumber} ".")
-    group(
+    3(${ipNumber} ".")
+    (
         | ${ipNumber}
         | ${domainSegment} ":" ${ipHexText}
     )
@@ -112,9 +111,9 @@ const ip = readex`
 `
 
 const email = readex`
-    group<username>(${username}) "@" group<tail>(
-        | group<domain>(${domain})
-        | group<ip>(${ip})
+    <username>(${username}) "@" <tail>(
+        | <domain>(${domain})
+        | <ip>(${ip})
     )
 `
 
