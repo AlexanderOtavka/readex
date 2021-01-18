@@ -47,13 +47,5 @@
       },
       "problemMatcher": []
     },
-    {
-      "type": "npm",
-      "label": "lint",
-      "script": "lint",
-      "problemMatcher": [
-        "$eslint-stylish"
-      ]
-    }
   ]
 }

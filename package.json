@@ -19,15 +19,14 @@
   "types": "lib/index",
   "scripts": {
     "clean": "rimraf lib && rimraf coverage",
-    "format": "prettier --write \"{src,__tests__}/**/*.ts\" --single-quote --trailing-comma es5",
-    "lint": "tslint --force --format verbose \"src/**/*.ts\"",
+    "format": "prettier --write \"{src,__tests__}/**/*.ts\" --trailing-comma es5",
     "prepublishOnly": "npm run build",
-    "prebuild": "npm run clean && npm run format && npm run lint && echo Using TypeScript && tsc --version",
+    "prebuild": "npm run clean && npm run format && echo Using TypeScript && tsc --version",
     "build": "tsc --pretty",
-    "test": "jest",
-    "coverage": "jest --coverage",
+    "test": "jest --no-cache",
+    "coverage": "jest --coverage --no-cache",
     "watch": "npm run build -- --watch",
-    "watch:test": "jest --watch"
+    "watch:test": "jest --watch --no-cache"
   },
   "dependencies": {},
   "devDependencies": {
@@ -39,14 +38,17 @@
     "rimraf": "^2.6.2",
     "ts-jest": "^23.10.3",
     "ts-node": "^7.0.1",
-    "tslint": "^5.11.0",
-    "tslint-config-prettier": "^1.15.0",
     "typescript": "^3.1.1"
   },
   "engines": {
     "node": ">=10.0.0"
   },
   "jest": {
-    "preset": "ts-jest"
+    "preset": "ts-jest",
+    "globals": {
+      "ts-jest": {
+        "diagnostics": false
+      }
+    }
   }
 }
