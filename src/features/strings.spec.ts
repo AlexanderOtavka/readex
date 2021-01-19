@@ -1,5 +1,5 @@
-import { LexError } from "../lex";
-import { StringsFeature } from "./strings";
+import { lex, LexError } from "../lex";
+import { StringAst, StringsFeature } from "./strings";
 
 describe("StringsFeature.lex", () => {
   const feature = new StringsFeature();
@@ -16,6 +16,10 @@ describe("StringsFeature.lex", () => {
       token: { type: "STRING", value: "hello there" },
       consumed: 13,
     });
+  });
+
+  it("should ignore other things", () => {
+    expect(feature.lex("hello there")).toBeNull();
   });
 
   it("should ignore single quotes in a double quote string", () => {
@@ -41,5 +45,27 @@ describe("StringsFeature.lex", () => {
 
   it("should error on unclosed strings", () => {
     expect(() => feature.lex('"hello there')).toThrow(LexError);
+  });
+});
+
+describe("StringsFeature.parse", () => {
+  const feature = new StringsFeature();
+
+  it("should convert a string to an equivalent ast", () => {
+    expect(feature.parse(lex('"hello there"'))).toEqual({
+      ast: new StringAst("hello there"),
+      consumed: 1,
+    });
+  });
+
+  it("should ignore non-strings", () => {
+    expect(feature.parse([{ type: "FOO" }, ...lex('"hello there"')])).toBeNull();
+  });
+
+  it("should convert multiple strings to a single ast", () => {
+    expect(feature.parse(lex('"hello " "there" " General Kenobi"'))).toEqual({
+      ast: new StringAst("hello there General Kenobi"),
+      consumed: 3,
+    });
   });
 });

@@ -1,14 +1,6 @@
 import { Feature } from ".";
 import { LexError, LexResult, Token } from "../lex";
-
-export interface StringToken {
-  type: "STRING";
-  value: string;
-}
-
-export function isStringToken(token: Token): token is StringToken {
-  return token.type === "STRING";
-}
+import { Ast, ParseResult } from "../parse";
 
 export class StringsFeature implements Feature {
   lex(code: string): LexResult<StringToken> {
@@ -31,5 +23,49 @@ export class StringsFeature implements Feature {
     }
 
     throw new LexError("Unclosed string matcher", 0, code.length - 1);
+  }
+
+  parse(tokens: Token[]): ParseResult<StringAst> {
+    const firstToken = tokens[0];
+
+    if (!isStringToken(firstToken)) {
+      return null;
+    }
+
+    let value = firstToken.value;
+
+    let i = 1;
+    while (i < tokens.length) {
+      const currentToken = tokens[i];
+
+      if (!isStringToken(currentToken)) {
+        break;
+      }
+
+      value += currentToken.value;
+      i++;
+    }
+
+    return {
+      ast: new StringAst(value),
+      consumed: i,
+    };
+  }
+}
+
+export interface StringToken extends Token {
+  type: "STRING";
+  value: string;
+}
+
+function isStringToken(token: Token): token is StringToken {
+  return token && token.type === "STRING";
+}
+
+export class StringAst implements Ast {
+  constructor(public value: string) {}
+
+  toNfa() {
+    throw new Error("not implemented");
   }
 }

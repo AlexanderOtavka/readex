@@ -1,4 +1,4 @@
-import { features, } from "./features";
+import { features } from "./features";
 
 export interface Token {
   type: string;
@@ -37,24 +37,30 @@ export function lex(code: string): Token[] {
 
   let i = 0;
   while (i < code.length) {
-    if (code[0].match(/\s/)) {
+    if (code[i].match(/\s/)) {
       i++;
     } else {
+      let result: LexResult<Token> = null;
       for (const lexer of lexers) {
         try {
-          const result = lexer(code.substring(i))
+          result = lexer(code.substring(i));
           if (result) {
-            tokens.push(result.token)
-            i += result.consumed;
             break;
           }
         } catch (error) {
           if (error instanceof LexError) {
-            error.addOffset(i)
+            error.addOffset(i);
           }
           throw error;
         }
       }
+
+      if (!result) {
+        throw new LexError(`Unknown symbol: \`${code[i]}\``, i, i+1)
+      }
+
+      tokens.push(result.token);
+      i += result.consumed;
     }
   }
 
