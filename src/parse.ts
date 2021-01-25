@@ -34,11 +34,11 @@ function parseWithParsers(
   for (const parser of parsers) {
     const parseResult = parser(tokens, parserMap);
     if (parseResult) {
-      return parseResult
+      return parseResult;
     }
   }
 
-  return null
+  return null;
 }
 
 const expressionParsers: Parser[] = features
@@ -63,7 +63,7 @@ const parserMap: ParserMap = {
 };
 
 export function parse(tokens: Token[]): Ast {
-  const parseResult = parserMap.parseExpression(tokens, parserMap)
+  const parseResult = parserMap.parseExpression(tokens, parserMap);
 
   if (!parseResult) {
     throw new ParseError(`Couldn't match ${tokens[0]} token with a parser`);
@@ -71,7 +71,10 @@ export function parse(tokens: Token[]): Ast {
 
   if (parseResult.consumed < tokens.length) {
     throw new ParseError(
-      `Couldn't match entire expression, failing at ${tokens[parseResult.consumed]}`)
+      `Couldn't match entire expression, failing at ${
+        tokens[parseResult.consumed]
+      }`
+    );
   }
 
   return parseResult.ast;

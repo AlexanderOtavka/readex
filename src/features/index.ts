@@ -1,5 +1,6 @@
 import { Lexer } from "../lex";
 import { Parser } from "../parse";
+import { ConstantsFeature } from "./constants";
 import { StringsFeature } from "./strings";
 
 export interface Feature {
@@ -8,4 +9,7 @@ export interface Feature {
   parseTerm?: Parser;
 }
 
-export const features: Feature[] = [new StringsFeature()];
+export const features: Feature[] = [
+  new StringsFeature(),
+  new ConstantsFeature(),
+];

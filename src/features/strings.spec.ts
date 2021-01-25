@@ -65,7 +65,9 @@ describe("StringsFeature.parse", () => {
   });
 
   it("should convert multiple strings to a single ast", () => {
-    expect(feature.parseTerm(lex('"hello " "there" " General Kenobi"'))).toEqual({
+    expect(
+      feature.parseTerm(lex('"hello " "there" " General Kenobi"'))
+    ).toEqual({
       ast: new StringAst("hello there General Kenobi"),
       consumed: 3,
     });
