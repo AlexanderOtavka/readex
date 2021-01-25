@@ -1,4 +1,6 @@
 import { lex } from "./lex";
+import { executeNfa, Nfa } from "./nfa";
+import { parse } from "./parse";
 
 export type ReadExArg = string | number | ReadEx;
 
@@ -12,13 +14,14 @@ export class ReadEx {
     }
 
     const tokens = lex(codeSegments[0]);
+    const ast = parse(tokens);
 
-    return new ReadEx();
+    return new ReadEx(ast.toNfa());
   }
 
-  private constructor() {}
+  private constructor(private nfa: Nfa) {}
 
   public doesMatch(string: string): boolean {
-    return true;
+    return executeNfa(this.nfa, string);
   }
 }

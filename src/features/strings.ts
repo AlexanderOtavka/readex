@@ -1,5 +1,6 @@
 import { Feature } from ".";
 import { LexError, LexResult, Token } from "../lex";
+import { Nfa } from "../nfa";
 import { Ast, ParseResult } from "../parse";
 
 export class StringsFeature implements Feature {
@@ -25,7 +26,7 @@ export class StringsFeature implements Feature {
     throw new LexError("Unclosed string matcher", 0, code.length - 1);
   }
 
-  parse(tokens: Token[]): ParseResult<StringAst> {
+  parseTerm(tokens: Token[]): ParseResult<StringAst> {
     const firstToken = tokens[0];
 
     if (!isStringToken(firstToken)) {
@@ -34,6 +35,7 @@ export class StringsFeature implements Feature {
 
     let value = firstToken.value;
 
+    // Eat sequential string tokens to save work later
     let i = 1;
     while (i < tokens.length) {
       const currentToken = tokens[i];
@@ -66,6 +68,22 @@ export class StringAst implements Ast {
   constructor(public value: string) {}
 
   toNfa() {
-    throw new Error("not implemented");
+    return new StringNfa(this.value);
+  }
+}
+
+export class StringNfa implements Nfa {
+  constructor(public value: string) {}
+
+  executeStep(char: string): Nfa[] {
+    if (char === this.value[0]) {
+      return [new StringNfa(this.value.substring(1))];
+    } else {
+      return [];
+    }
+  }
+
+  isComplete(): boolean {
+    return this.value === "";
   }
 }

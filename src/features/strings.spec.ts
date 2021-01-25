@@ -52,18 +52,20 @@ describe("StringsFeature.parse", () => {
   const feature = new StringsFeature();
 
   it("should convert a string to an equivalent ast", () => {
-    expect(feature.parse(lex('"hello there"'))).toEqual({
+    expect(feature.parseTerm(lex('"hello there"'))).toEqual({
       ast: new StringAst("hello there"),
       consumed: 1,
     });
   });
 
   it("should ignore non-strings", () => {
-    expect(feature.parse([{ type: "FOO" }, ...lex('"hello there"')])).toBeNull();
+    expect(
+      feature.parseTerm([{ type: "FOO" }, ...lex('"hello there"')])
+    ).toBeNull();
   });
 
   it("should convert multiple strings to a single ast", () => {
-    expect(feature.parse(lex('"hello " "there" " General Kenobi"'))).toEqual({
+    expect(feature.parseTerm(lex('"hello " "there" " General Kenobi"'))).toEqual({
       ast: new StringAst("hello there General Kenobi"),
       consumed: 3,
     });

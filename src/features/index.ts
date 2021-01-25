@@ -4,7 +4,8 @@ import { StringsFeature } from "./strings";
 
 export interface Feature {
   lex?: Lexer;
-  parse?: Parser;
+  parseExpression?: Parser;
+  parseTerm?: Parser;
 }
 
 export const features: Feature[] = [new StringsFeature()];

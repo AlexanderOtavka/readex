@@ -56,7 +56,7 @@ export function lex(code: string): Token[] {
       }
 
       if (!result) {
-        throw new LexError(`Unknown symbol: \`${code[i]}\``, i, i+1)
+        throw new LexError(`Unknown symbol: \`${code[i]}\``, i, i + 1);
       }
 
       tokens.push(result.token);
