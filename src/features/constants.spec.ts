@@ -11,10 +11,18 @@ describe("ConstantsFeature.lex", () => {
   });
 
   it("lexes another word", () => {
-    expect(feature.lex("foo_Bar1")).toEqual({
-      token: { type: "CONSTANT", value: "foo_Bar1" },
+    expect(feature.lex("zil1_Bar")).toEqual({
+      token: { type: "CONSTANT", value: "zil1_Bar" },
       consumed: 8,
     });
+  });
+
+  it("ignores stuff starting with number", () => {
+    expect(feature.lex("5foo")).toBeNull();
+  });
+
+  it("ignores stuff starting with underscore", () => {
+    expect(feature.lex("_foo")).toBeNull();
   });
 
   it("ignores quoted stuff", () => {
@@ -22,8 +30,8 @@ describe("ConstantsFeature.lex", () => {
   });
 
   it("stops at spaces", () => {
-    expect(feature.lex("foo_Bar1 baz")).toEqual({
-      token: { type: "CONSTANT", value: "foo_Bar1" },
+    expect(feature.lex("JAZ_BAR1 baz")).toEqual({
+      token: { type: "CONSTANT", value: "JAZ_BAR1" },
       consumed: 8,
     });
   });
