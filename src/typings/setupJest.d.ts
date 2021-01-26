@@ -5,7 +5,7 @@ declare global {
 
   namespace jest {
     interface Matchers<R> {
-      toBeMatchFor(input: string): R
+      toBeMatchFor(input: string): R;
     }
   }
 }

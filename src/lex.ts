@@ -27,8 +27,8 @@ export class LexError extends Error {
 export type Lexer<T extends Token = Token> = (code: string) => LexResult<T>;
 
 const lexers: Lexer[] = features
-  .filter(feature => feature.lex)
-  .map(feature => (code: string) => feature.lex!(code));
+  .filter((feature) => feature.lex)
+  .map((feature) => (code: string) => feature.lex!(code));
 
 export function lex(code: string): Token[] {
   const tokens: Token[] = [];

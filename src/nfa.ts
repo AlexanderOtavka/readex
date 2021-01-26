@@ -31,5 +31,5 @@ export function executeNfa(nfa: Nfa, input: string): boolean {
     nextStates = [];
   }
 
-  return currentStates.some(state => state.isComplete());
+  return currentStates.some((state) => state.isComplete());
 }

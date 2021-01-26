@@ -50,7 +50,7 @@ export class CatenationNfa implements Nfa {
     } else {
       return this.left
         .executeStep(char)
-        .map(steppedLeft => new CatenationNfa(steppedLeft, this.right));
+        .map((steppedLeft) => new CatenationNfa(steppedLeft, this.right));
     }
   }
 

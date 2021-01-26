@@ -28,14 +28,16 @@ export class ParseError extends Error {
 }
 
 const expressionParsers: Parser[] = features
-  .filter(feature => feature.parseExpression)
-  .map(feature => (tokens, parserMap) =>
+  .filter((feature) => feature.parseExpression)
+  .map((feature) => (tokens, parserMap) =>
     feature.parseExpression!(tokens, parserMap)
   );
 
 const termParsers: Parser[] = features
-  .filter(feature => feature.parseTerm)
-  .map(feature => (tokens, parserMap) => feature.parseTerm!(tokens, parserMap));
+  .filter((feature) => feature.parseTerm)
+  .map((feature) => (tokens, parserMap) =>
+    feature.parseTerm!(tokens, parserMap)
+  );
 
 export const parserMap: ParserMap = {
   parseExpression: (tokens, parserMap) =>

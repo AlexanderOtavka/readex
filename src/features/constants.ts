@@ -6,12 +6,12 @@ import { Ast, ParseResult } from "../parse";
 type Matcher = (char: string) => boolean;
 
 export const constants: { [name: string]: Matcher } = {
-  wordChar: char => /\w/.test(char),
-  nonWordChar: char => /\W/.test(char),
-  digit: char => /\d/.test(char),
-  nonDigit: char => /\D/.test(char),
-  whitespace: char => /\s/.test(char),
-  nonWhitespace: char => /\S/.test(char),
+  wordChar: (char) => /\w/.test(char),
+  nonWordChar: (char) => /\W/.test(char),
+  digit: (char) => /\d/.test(char),
+  nonDigit: (char) => /\D/.test(char),
+  whitespace: (char) => /\s/.test(char),
+  nonWhitespace: (char) => /\S/.test(char),
 };
 
 export class ConstantsFeature implements Feature {
