@@ -1,14 +1,10 @@
 {
   "name": "readex",
   "version": "0.0.0",
-  "description": "readex",
-  "license": "MIT",
-  "repository": "",
-  "author": {
-    "name": "",
-    "email": "",
-    "url": ""
-  },
+  "description": "Readable regular expressions",
+  "license": "GPL-3.0",
+  "repository": "https://github.com/AlexanderOtavka/readex",
+  "author": "Zander Otavka",
   "keywords": [
     ""
   ],
