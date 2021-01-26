@@ -1,39 +1,39 @@
 import { readex } from "..";
 
 test("Should match a word character", () => {
-  expect(readex`wordChar`.doesMatch("z")).toBeTruthy();
-  expect(readex`wordChar`.doesMatch("D")).toBeTruthy();
-  expect(readex`wordChar`.doesMatch("3")).toBeTruthy();
-  expect(readex`wordChar`.doesMatch("_")).toBeTruthy();
+  expect(readex`wordChar`).toBeMatchFor("z");
+  expect(readex`wordChar`).toBeMatchFor("D");
+  expect(readex`wordChar`).toBeMatchFor("3");
+  expect(readex`wordChar`).toBeMatchFor("_");
 });
 
 test("Should match a non-word character", () => {
-  expect(readex`nonWordChar`.doesMatch("z")).toBeFalsy();
-  expect(readex`nonWordChar`.doesMatch("D")).toBeFalsy();
-  expect(readex`nonWordChar`.doesMatch("3")).toBeFalsy();
-  expect(readex`nonWordChar`.doesMatch("_")).toBeFalsy();
+  expect(readex`nonWordChar`).not.toBeMatchFor("z");
+  expect(readex`nonWordChar`).not.toBeMatchFor("D");
+  expect(readex`nonWordChar`).not.toBeMatchFor("3");
+  expect(readex`nonWordChar`).not.toBeMatchFor("_");
 });
 
 test("Should match a digit character", () => {
-  expect(readex`digit`.doesMatch("1")).toBeTruthy();
-  expect(readex`digit`.doesMatch("9")).toBeTruthy();
+  expect(readex`digit`).toBeMatchFor("1");
+  expect(readex`digit`).toBeMatchFor("9");
 });
 
 test("Should match a non-digit character", () => {
-  expect(readex`nonDigit`.doesMatch("1")).toBeFalsy();
-  expect(readex`nonDigit`.doesMatch("9")).toBeFalsy();
+  expect(readex`nonDigit`).not.toBeMatchFor("1");
+  expect(readex`nonDigit`).not.toBeMatchFor("9");
 });
 
 test("Should match a whitespace character", () => {
-  expect(readex`whitespace`.doesMatch(" ")).toBeTruthy();
-  expect(readex`whitespace`.doesMatch("\n")).toBeTruthy();
-  expect(readex`whitespace`.doesMatch("\t")).toBeTruthy();
-  expect(readex`whitespace`.doesMatch("\r")).toBeTruthy();
+  expect(readex`whitespace`).toBeMatchFor(" ");
+  expect(readex`whitespace`).toBeMatchFor("\n");
+  expect(readex`whitespace`).toBeMatchFor("\t");
+  expect(readex`whitespace`).toBeMatchFor("\r");
 });
 
 test("Should match a non-whitespace character", () => {
-  expect(readex`nonWhitespace`.doesMatch(" ")).toBeFalsy();
-  expect(readex`nonWhitespace`.doesMatch("\n")).toBeFalsy();
-  expect(readex`nonWhitespace`.doesMatch("\t")).toBeFalsy();
-  expect(readex`nonWhitespace`.doesMatch("\r")).toBeFalsy();
+  expect(readex`nonWhitespace`).not.toBeMatchFor(" ");
+  expect(readex`nonWhitespace`).not.toBeMatchFor("\n");
+  expect(readex`nonWhitespace`).not.toBeMatchFor("\t");
+  expect(readex`nonWhitespace`).not.toBeMatchFor("\r");
 });

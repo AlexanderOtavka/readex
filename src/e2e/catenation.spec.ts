@@ -1,26 +1,26 @@
 import { readex } from "..";
 
 test("Should match a string catenated with a constant", () => {
-  expect(readex`"foo" digit`.doesMatch("foo1")).toBeTruthy();
-  expect(readex`"foo" digit`.doesMatch("foo3")).toBeTruthy();
+  expect(readex`"foo" digit`).toBeMatchFor("foo1");
+  expect(readex`"foo" digit`).toBeMatchFor("foo3");
 });
 
 test("Should match a string catenated with two constants", () => {
-  expect(readex`"foo" whitespace digit`.doesMatch("foo 1")).toBeTruthy();
-  expect(readex`whitespace "foo" digit`.doesMatch("\tfoo3")).toBeTruthy();
-  expect(readex`whitespace digit "foo"`.doesMatch("\n9foo")).toBeTruthy();
+  expect(readex`"foo" whitespace digit`).toBeMatchFor("foo 1");
+  expect(readex`whitespace "foo" digit`).toBeMatchFor("\tfoo3");
+  expect(readex`whitespace digit "foo"`).toBeMatchFor("\n9foo");
 });
 
 test("Empty catted patterns shouldn't affect the pattern", () => {
-  expect(readex`"" digit`.doesMatch("1")).toBeTruthy();
-  expect(readex`"" digit ""`.doesMatch("1")).toBeTruthy();
-  expect(readex`digit ""`.doesMatch("1")).toBeTruthy();
+  expect(readex`"" digit`).toBeMatchFor("1");
+  expect(readex`"" digit ""`).toBeMatchFor("1");
+  expect(readex`digit ""`).toBeMatchFor("1");
 
-  expect(readex`"" digit`.doesMatch("f")).toBeFalsy();
-  expect(readex`"" digit ""`.doesMatch("f")).toBeFalsy();
-  expect(readex`digit ""`.doesMatch("f")).toBeFalsy();
+  expect(readex`"" digit`).not.toBeMatchFor("f");
+  expect(readex`"" digit ""`).not.toBeMatchFor("f");
+  expect(readex`digit ""`).not.toBeMatchFor("f");
 
-  expect(readex`"" digit`.doesMatch("")).toBeFalsy();
-  expect(readex`"" digit ""`.doesMatch("")).toBeFalsy();
-  expect(readex`digit ""`.doesMatch("")).toBeFalsy();
+  expect(readex`"" digit`).not.toBeMatchFor("");
+  expect(readex`"" digit ""`).not.toBeMatchFor("");
+  expect(readex`digit ""`).not.toBeMatchFor("");
 });

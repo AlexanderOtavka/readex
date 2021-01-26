@@ -3,11 +3,10 @@
     "declaration": true,
     "module": "commonjs",
     "moduleResolution": "node",
-    "lib": [
-      "esnext"
-    ],
+    "lib": ["esnext"],
     "target": "es2015",
     "outDir": "./lib",
+    "typeRoots": ["./node_modules/@types", "src/typings"],
     "removeComments": true,
     "inlineSourceMap": true,
     "inlineSources": true,
@@ -25,6 +24,5 @@
   ],
   "exclude": [
     "node_modules",
-    "**/*-spec.ts"
   ]
 }

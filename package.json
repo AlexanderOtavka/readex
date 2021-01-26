@@ -30,13 +30,13 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@types/jest": "^23.3.3",
+    "@types/jest": "^26.0.20",
     "@types/node": "^10.11.4",
     "coveralls": "^3.0.2",
-    "jest": "^23.6.0",
+    "jest": "^26.6.0",
     "prettier": "^1.14.3",
     "rimraf": "^2.6.2",
-    "ts-jest": "^23.10.3",
+    "ts-jest": "^26.4.4",
     "ts-node": "^7.0.1",
     "typescript": "^3.1.1"
   },
@@ -45,6 +45,9 @@
   },
   "jest": {
     "preset": "ts-jest",
+    "setupFilesAfterEnv": [
+      "./setupJest.js"
+    ],
     "globals": {
       "ts-jest": {
         "diagnostics": false
