@@ -11,9 +11,10 @@ export type ParseResult<T extends Ast> = {
   consumed: number;
 } | null;
 
-export interface Parser<T extends Ast = Ast> {
-  (tokens: Token[], parserMap: ParserMap): ParseResult<T>;
-}
+export type Parser<T extends Ast = Ast> = (
+  tokens: Token[],
+  parserMap: ParserMap
+) => ParseResult<T>;
 
 export interface ParserMap {
   parseExpression: Parser;

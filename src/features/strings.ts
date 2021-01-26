@@ -61,7 +61,7 @@ export interface StringToken extends Token {
 }
 
 function isStringToken(token: Token): token is StringToken {
-  return token && token.type === "STRING";
+  return token.type === "STRING";
 }
 
 export class StringAst implements Ast {

@@ -24,9 +24,7 @@ export class LexError extends Error {
   }
 }
 
-export interface Lexer<T extends Token = Token> {
-  (code: string): LexResult<T>;
-}
+export type Lexer<T extends Token = Token> = (code: string) => LexResult<T>;
 
 const lexers: Lexer[] = features
   .filter(feature => feature.lex)
