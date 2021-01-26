@@ -37,7 +37,7 @@ export class CatenationAst implements Ast {
   constructor(public left: Ast, public right: Ast) {}
 
   toNfa(): Nfa {
-    return new CatenationNfa( this.left.toNfa(), this.right.toNfa())
+    return new CatenationNfa(this.left.toNfa(), this.right.toNfa());
   }
 }
 
@@ -46,9 +46,11 @@ export class CatenationNfa implements Nfa {
 
   executeStep(char: string): Nfa[] {
     if (this.left.isComplete()) {
-      return this.right.executeStep(char)
+      return this.right.executeStep(char);
     } else {
-      return this.left.executeStep(char).map(steppedLeft => new CatenationNfa(steppedLeft, this.right))
+      return this.left
+        .executeStep(char)
+        .map(steppedLeft => new CatenationNfa(steppedLeft, this.right));
     }
   }
 
