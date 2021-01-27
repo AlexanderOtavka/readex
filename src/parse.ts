@@ -47,7 +47,9 @@ export const parserMap: ParserMap = {
 
 export function parse(tokens: Token[]): Ast {
   if (tokens.length === 0) {
-    throw new ReadExSyntaxError('Cannot be empty, use `beginString endString` to match an empty string');
+    throw new ReadExSyntaxError(
+      "Cannot be empty, use `beginString endString` to match an empty string"
+    );
   }
 
   const parseResult = parserMap.parseExpression(tokens, parserMap);

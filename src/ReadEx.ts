@@ -20,9 +20,11 @@ export class ReadEx {
       return new ReadEx(ast.toNfa());
     } catch (error) {
       if (error instanceof ReadExSyntaxError) {
-        throw new SyntaxError(`Invalid readex \`${codeSegments.join("${...}")}\`: ${error.message}`)
+        throw new SyntaxError(
+          `Invalid readex \`${codeSegments.join("${...}")}\`: ${error.message}`
+        );
       } else {
-        throw error
+        throw error;
       }
     }
   }
