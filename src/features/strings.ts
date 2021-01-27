@@ -1,7 +1,8 @@
 import { Feature } from ".";
-import { LexError, LexResult, Token } from "../lex";
+import { LexResult, Token } from "../lex";
 import { Nfa } from "../nfa";
 import { Ast, ParseResult } from "../parse";
+import { ReadExSyntaxError } from "../util.ts/ReadExSyntaxError";
 
 export class StringsFeature implements Feature {
   lex(code: string): LexResult<StringToken> {
@@ -23,7 +24,7 @@ export class StringsFeature implements Feature {
       }
     }
 
-    throw new LexError("Unclosed string matcher", 0, code.length - 1);
+    throw new ReadExSyntaxError("Unclosed string matcher");
   }
 
   parseTerm(tokens: Token[]): ParseResult<StringAst> {

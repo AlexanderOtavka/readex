@@ -1,4 +1,5 @@
-import { lex, LexError } from "../lex";
+import { lex } from "../lex";
+import { ReadExSyntaxError } from "../util.ts/ReadExSyntaxError";
 import { StringAst, StringsFeature } from "./strings";
 
 describe("StringsFeature.lex", () => {
@@ -44,7 +45,7 @@ describe("StringsFeature.lex", () => {
   });
 
   it("should error on unclosed strings", () => {
-    expect(() => feature.lex('"hello there')).toThrow(LexError);
+    expect(() => feature.lex('"hello there')).toThrow(ReadExSyntaxError);
   });
 });
 

@@ -9,21 +9,6 @@ export type LexResult<T extends Token> = {
   consumed: number;
 } | null;
 
-export class LexError extends Error {
-  public constructor(
-    message: string,
-    public start: number,
-    public end: number
-  ) {
-    super(message);
-  }
-
-  public addOffset(offset: number) {
-    this.start += offset;
-    this.end += offset;
-  }
-}
-
 export type Lexer<T extends Token = Token> = (code: string) => LexResult<T>;
 
 const lexers: Lexer[] = features
@@ -40,21 +25,14 @@ export function lex(code: string): Token[] {
     } else {
       let result: LexResult<Token> = null;
       for (const lexer of lexers) {
-        try {
-          result = lexer(code.substring(i));
-          if (result) {
-            break;
-          }
-        } catch (error) {
-          if (error instanceof LexError) {
-            error.addOffset(i);
-          }
-          throw error;
+        result = lexer(code.substring(i));
+        if (result) {
+          break;
         }
       }
 
       if (!result) {
-        throw new LexError(`Unknown symbol: \`${code[i]}\``, i, i + 1);
+        throw new SyntaxError(`Unknown symbol: \`${code[i]}\``);
       }
 
       tokens.push(result.token);

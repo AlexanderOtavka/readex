@@ -1,6 +1,7 @@
 import { features } from "./features";
 import { Token } from "./lex";
 import { Nfa } from "./nfa";
+import { ReadExSyntaxError } from "./util.ts/ReadExSyntaxError";
 
 export interface Ast {
   toNfa(): Nfa;
@@ -19,12 +20,6 @@ export type Parser<T extends Ast = Ast> = (
 export interface ParserMap {
   parseExpression: Parser;
   parseTerm: Parser;
-}
-
-export class ParseError extends Error {
-  constructor(message: string) {
-    super(message);
-  }
 }
 
 const expressionParsers: Parser[] = features
@@ -51,17 +46,19 @@ export const parserMap: ParserMap = {
 };
 
 export function parse(tokens: Token[]): Ast {
+  if (tokens.length === 0) {
+    throw new ReadExSyntaxError('Cannot be empty, use `beginString endString` to match an empty string');
+  }
+
   const parseResult = parserMap.parseExpression(tokens, parserMap);
 
   if (!parseResult) {
-    throw new ParseError(
-      `Couldn't match ${tokens[0].type} token with a parser`
-    );
+    throw new ReadExSyntaxError(`Couldn't parse ${tokens[0].type} token`);
   }
 
   if (parseResult.consumed < tokens.length) {
-    throw new ParseError(
-      `Couldn't match entire expression, failing at ${
+    throw new ReadExSyntaxError(
+      `Couldn't parse entire expression, failing at ${
         tokens[parseResult.consumed].type
       }`
     );

@@ -1,6 +1,7 @@
 import { lex } from "./lex";
 import { executeNfa, Nfa } from "./nfa";
 import { parse } from "./parse";
+import { ReadExSyntaxError } from "./util.ts/ReadExSyntaxError";
 
 export type ReadExArg = string | number | ReadEx;
 
@@ -13,10 +14,17 @@ export class ReadEx {
       throw new Error("Template string args not supported yet");
     }
 
-    const tokens = lex(codeSegments[0]);
-    const ast = parse(tokens);
-
-    return new ReadEx(ast.toNfa());
+    try {
+      const tokens = lex(codeSegments[0]);
+      const ast = parse(tokens);
+      return new ReadEx(ast.toNfa());
+    } catch (error) {
+      if (error instanceof ReadExSyntaxError) {
+        throw new SyntaxError(`Invalid readex \`${codeSegments.join("${...}")}\`: ${error.message}`)
+      } else {
+        throw error
+      }
+    }
   }
 
   private constructor(private nfa: Nfa) {}
