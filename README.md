@@ -45,6 +45,6 @@ greeter.greet();
 2. Sign in to [coveralls](https://coveralls.io/) and activate the build for your project.
 3. Replace {{github-user-name}}/{{github-app-name}} with your repo details like: "ospatil/generator-node-typescript".
 
-================================================================================
+--------------------------------------------------------------------------------
 
 This project was initialized with [generator-node-typescript](https://github.com/ospatil/generator-node-typescript)
