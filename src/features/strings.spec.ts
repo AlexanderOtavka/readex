@@ -1,5 +1,5 @@
 import { lex } from "../lex";
-import { ReadExSyntaxError } from "../util.ts/ReadExSyntaxError";
+import { ReadExSyntaxError } from "../util.ts/errors";
 import { StringAst, StringsFeature } from "./strings";
 
 describe("StringsFeature.lex", () => {

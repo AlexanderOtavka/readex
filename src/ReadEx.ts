@@ -1,7 +1,7 @@
 import { lex } from "./lex";
 import { executeNfa, Nfa } from "./nfa";
 import { parse } from "./parse";
-import { ReadExSyntaxError } from "./util.ts/ReadExSyntaxError";
+import { ReadExReferenceError, ReadExSyntaxError } from "./util.ts/errors";
 
 export type ReadExArg = string | number | ReadEx;
 
@@ -21,6 +21,10 @@ export class ReadEx {
     } catch (error) {
       if (error instanceof ReadExSyntaxError) {
         throw new SyntaxError(
+          `Invalid readex \`${codeSegments.join("${...}")}\`: ${error.message}`
+        );
+      } else if (error instanceof ReadExReferenceError) {
+        throw new ReferenceError(
           `Invalid readex \`${codeSegments.join("${...}")}\`: ${error.message}`
         );
       } else {

@@ -2,6 +2,7 @@ import { Feature } from ".";
 import { LexResult, Token } from "../lex";
 import { CompleteNfa, Nfa } from "../nfa";
 import { Ast, ParseResult } from "../parse";
+import { ReadExReferenceError } from "../util.ts/errors";
 
 type Matcher = (char: string) => boolean;
 
@@ -58,7 +59,7 @@ export class ConstantAst implements Ast {
 
   toNfa(): Nfa {
     if (!(this.name in constants)) {
-      throw new ReferenceError(`${this.name} is not a ReadEx constant`);
+      throw new ReadExReferenceError(`Unknown constant: ${this.name}`);
     } else {
       return new ConstantNfa(constants[this.name]);
     }

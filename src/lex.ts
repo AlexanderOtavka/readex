@@ -1,4 +1,5 @@
 import { features } from "./features";
+import { ReadExSyntaxError } from "./util.ts/errors";
 
 export interface Token {
   type: string;
@@ -32,7 +33,7 @@ export function lex(code: string): Token[] {
       }
 
       if (!result) {
-        throw new SyntaxError(`Unknown symbol: \`${code[i]}\``);
+        throw new ReadExSyntaxError(`Unknown symbol: ${code[i]}`);
       }
 
       tokens.push(result.token);

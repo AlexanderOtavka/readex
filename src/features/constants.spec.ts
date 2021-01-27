@@ -1,4 +1,5 @@
 import { lex } from "../lex";
+import { ReadExReferenceError } from "../util.ts/errors";
 import { ConstantAst, ConstantsFeature } from "./constants";
 
 describe("ConstantsFeature.lex", () => {
@@ -55,8 +56,6 @@ describe("ConstantAst.toNfa", () => {
   });
 
   it("throws for unknown constants", () => {
-    expect(() => new ConstantAst("foo").toNfa()).toThrow(
-      new ReferenceError("foo is not a ReadEx constant")
-    );
+    expect(() => new ConstantAst("foo").toNfa()).toThrow(ReadExReferenceError);
   });
 });

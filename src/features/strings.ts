@@ -2,7 +2,7 @@ import { Feature } from ".";
 import { LexResult, Token } from "../lex";
 import { Nfa } from "../nfa";
 import { Ast, ParseResult } from "../parse";
-import { ReadExSyntaxError } from "../util.ts/ReadExSyntaxError";
+import { ReadExSyntaxError } from "../util.ts/errors";
 
 export class StringsFeature implements Feature {
   lex(code: string): LexResult<StringToken> {

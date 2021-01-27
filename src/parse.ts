@@ -1,7 +1,7 @@
 import { features } from "./features";
 import { Token } from "./lex";
 import { Nfa } from "./nfa";
-import { ReadExSyntaxError } from "./util.ts/ReadExSyntaxError";
+import { ReadExSyntaxError } from "./util.ts/errors";
 
 export interface Ast {
   toNfa(): Nfa;
