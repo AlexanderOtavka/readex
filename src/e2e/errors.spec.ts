@@ -26,10 +26,20 @@ test("Should throw error for unknown constant", () => {
   );
 });
 
-test.skip("Should report errors with template insertions", () => {
-  expect(() => readex`${"foo"} "hello there`).toThrow(
+test("Should show simple template args in errors", () => {
+  expect(() => readex`${"foo"} ${readex`digit`} "hello there`).toThrow(
     new SyntaxError(
-      'Invalid readex `${...} "hello there`: Unclosed string matcher'
+      'Invalid readex `${"foo"} ${...} "hello there`: Unclosed string matcher'
+    )
+  );
+});
+
+test("Should report errors with mistyped template insertions", () => {
+  const obj = {} as any;
+  expect(() => readex`"hello there" ${obj}`).toThrow(
+    new SyntaxError(
+      'Invalid readex `"hello there" ${[object Object]}`: ' +
+        "Template variable must be a string or ReadEx, got: [object Object]"
     )
   );
 });
