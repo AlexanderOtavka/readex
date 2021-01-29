@@ -75,6 +75,6 @@ function templateToCode(
   return `\`${code}\``;
 }
 
-function errorMessagePrefix(code: string): string {
-  return `Invalid readex ${code}: `;
+function errorMessagePrefix(codeRepresentation: string): string {
+  return `Invalid readex ${codeRepresentation}: `;
 }

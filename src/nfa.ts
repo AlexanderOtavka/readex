@@ -1,6 +1,6 @@
 export interface Nfa {
   executeStep(char: string): Nfa[];
-  isComplete(): boolean;
+  isMatch(): boolean;
 }
 
 export class CompleteNfa implements Nfa {
@@ -8,7 +8,7 @@ export class CompleteNfa implements Nfa {
     return [];
   }
 
-  isComplete(): boolean {
+  isMatch(): boolean {
     return true;
   }
 }
@@ -31,5 +31,5 @@ export function executeNfa(nfa: Nfa, input: string): boolean {
     nextStates = [];
   }
 
-  return currentStates.some((state) => state.isComplete());
+  return currentStates.some((state) => state.isMatch());
 }

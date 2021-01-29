@@ -61,7 +61,7 @@ export class StringNfa implements Nfa {
     }
   }
 
-  isComplete(): boolean {
+  isMatch(): boolean {
     return this.value === "";
   }
 }

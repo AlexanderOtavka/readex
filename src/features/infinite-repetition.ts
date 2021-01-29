@@ -56,13 +56,13 @@ export class InfiniteRepeatNfa implements Nfa {
     return nfa
       .executeStep(char)
       .map((nextNfa) =>
-        nextNfa.isComplete()
+        nextNfa.isMatch()
           ? new InfiniteRepeatNfa(this.fullNfa)
           : new InfiniteRepeatNfa(this.fullNfa, nextNfa)
       );
   }
 
-  isComplete(): boolean {
+  isMatch(): boolean {
     return this.currentNfa === null;
   }
 }

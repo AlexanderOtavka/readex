@@ -45,7 +45,7 @@ export class CatenationNfa implements Nfa {
   constructor(public left: Nfa, public right: Nfa) {}
 
   executeStep(char: string): Nfa[] {
-    if (this.left.isComplete()) {
+    if (this.left.isMatch()) {
       return this.right.executeStep(char);
     } else {
       return this.left
@@ -54,7 +54,7 @@ export class CatenationNfa implements Nfa {
     }
   }
 
-  isComplete(): boolean {
-    return this.left.isComplete() && this.right.isComplete();
+  isMatch(): boolean {
+    return this.left.isMatch() && this.right.isMatch();
   }
 }

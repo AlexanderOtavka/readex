@@ -77,7 +77,7 @@ export class ConstantNfa implements Nfa {
     }
   }
 
-  isComplete(): boolean {
+  isMatch(): boolean {
     return false;
   }
 }
