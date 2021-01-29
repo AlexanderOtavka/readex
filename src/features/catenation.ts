@@ -46,13 +46,13 @@ export class CatenationNfa implements Nfa {
 
   executeStep(char: string): Nfa[] {
     const leftBranches = this.left
-        .executeStep(char)
-        .map((steppedLeft) => new CatenationNfa(steppedLeft, this.right));
+      .executeStep(char)
+      .map((steppedLeft) => new CatenationNfa(steppedLeft, this.right));
 
     if (this.left.isMatch()) {
       return [...leftBranches, ...this.right.executeStep(char)];
     } else {
-      return leftBranches
+      return leftBranches;
     }
   }
 
