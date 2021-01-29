@@ -8,8 +8,11 @@ export type ReadExArg = TemplateVar;
 
 export class ReadEx {
   public static fromTemplate(
-    codeSegments: TemplateStringsArray, args: ReadExArg[]
+    codeSegments: TemplateStringsArray,
+    args: ReadExArg[]
   ) {
+    const codeRepresentation = templateToCode(codeSegments, args);
+
     try {
       const tokens = lex(codeSegments[0]);
       for (let i = 1; i < codeSegments.length; i++) {
@@ -18,15 +21,15 @@ export class ReadEx {
       }
 
       const ast = parse(tokens);
-      return new ReadEx(ast.toNfa());
+      return new ReadEx(ast.toNfa(), codeRepresentation);
     } catch (error) {
       if (error instanceof ReadExSyntaxError) {
         throw new SyntaxError(
-          errorMessagePrefix(codeSegments, args) + error.message
+          errorMessagePrefix(codeRepresentation) + error.message
         );
       } else if (error instanceof ReadExReferenceError) {
         throw new ReferenceError(
-          errorMessagePrefix(codeSegments, args) + error.message
+          errorMessagePrefix(codeRepresentation) + error.message
         );
       } else {
         throw error;
@@ -34,7 +37,7 @@ export class ReadEx {
     }
   }
 
-  private constructor(private nfa: Nfa) {}
+  private constructor(private nfa: Nfa, private codeStringHack: string = "") {}
 
   public toNfa(): Nfa {
     return this.nfa;
@@ -43,24 +46,35 @@ export class ReadEx {
   public doesMatch(string: string): boolean {
     return executeNfa(this.nfa, string);
   }
+
+  public toString(): string {
+    return "readex" + this.codeStringHack;
+  }
 }
 
-function errorMessagePrefix(codeSegments: TemplateStringsArray, args: ReadExArg[]): string {
-  let code = codeSegments[0]
-  for (let i =1; i < codeSegments.length;i++) {
-    code += "${"
-    const arg = args[i-1]
+function templateToCode(
+  codeSegments: TemplateStringsArray,
+  args: ReadExArg[]
+): string {
+  let code = codeSegments[0];
+  for (let i = 1; i < codeSegments.length; i++) {
+    code += "${";
+    const arg = args[i - 1];
     if (typeof arg === "string") {
-      code += `"${arg}"`
+      code += `"${arg}"`;
     } else if (arg instanceof ReadEx) {
-      code += "..."
+      code += "...";
     } else {
-      code += arg
+      code += arg;
     }
-    code += "}"
+    code += "}";
 
-    code += codeSegments[i]
+    code += codeSegments[i];
   }
 
-  return `Invalid readex \`${code}\`: `
+  return `\`${code}\``;
+}
+
+function errorMessagePrefix(code: string): string {
+  return `Invalid readex ${code}: `;
 }

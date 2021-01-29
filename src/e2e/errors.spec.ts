@@ -43,3 +43,9 @@ test("Should report errors with mistyped template insertions", () => {
     )
   );
 });
+
+test("Should not like dangling * operators", () => {
+  expect(() => readex`"foo" *`).toThrow(
+    new SyntaxError('Invalid readex `"foo" *`: * must be followed by a pattern')
+  );
+});

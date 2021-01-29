@@ -13,12 +13,8 @@ export class StringsFeature implements Feature {
 
     for (let i = 1; i < code.length; i++) {
       if (code[i] === quoteType) {
-        const token: StringToken = {
-          type: "STRING",
-          value: code.substring(1, i),
-        };
         return {
-          token,
+          token: new StringToken(code.substring(1, i)),
           consumed: i + 1,
         };
       }
@@ -30,39 +26,20 @@ export class StringsFeature implements Feature {
   parseTerm(tokens: Token[]): ParseResult<StringAst> {
     const firstToken = tokens[0];
 
-    if (!isStringToken(firstToken)) {
+    if (!(firstToken instanceof StringToken)) {
       return null;
     }
 
-    let value = firstToken.value;
-
-    // Eat sequential string tokens to save work later
-    let i = 1;
-    while (i < tokens.length) {
-      const currentToken = tokens[i];
-
-      if (!isStringToken(currentToken)) {
-        break;
-      }
-
-      value += currentToken.value;
-      i++;
-    }
-
     return {
-      ast: new StringAst(value),
-      consumed: i,
+      ast: new StringAst(firstToken.value),
+      consumed: 1,
     };
   }
 }
 
-export interface StringToken extends Token {
-  type: "STRING";
-  value: string;
-}
-
-function isStringToken(token: Token): token is StringToken {
-  return token.type === "STRING";
+export class StringToken implements Token {
+  readonly type = "STRING";
+  constructor(public value: string) {}
 }
 
 export class StringAst implements Ast {
