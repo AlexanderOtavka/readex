@@ -1,20 +1,20 @@
 import { lex } from "../lex";
 import { ReadExReferenceError } from "../util.ts/errors";
-import { ConstantAst, ConstantsFeature } from "./constants";
+import { ConstantAst, ConstantsFeature, ConstantToken } from "./constants";
 
 describe("ConstantsFeature.lex", () => {
   const feature = new ConstantsFeature();
 
   it("lexes a word", () => {
     expect(feature.lex("foo")).toEqual({
-      token: { type: "CONSTANT", value: "foo" },
+      token: new ConstantToken("foo"),
       consumed: 3,
     });
   });
 
   it("lexes another word", () => {
     expect(feature.lex("zil1_Bar")).toEqual({
-      token: { type: "CONSTANT", value: "zil1_Bar" },
+      token: new ConstantToken("zil1_Bar"),
       consumed: 8,
     });
   });
@@ -33,7 +33,7 @@ describe("ConstantsFeature.lex", () => {
 
   it("stops at spaces", () => {
     expect(feature.lex("JAZ_BAR1 baz")).toEqual({
-      token: { type: "CONSTANT", value: "JAZ_BAR1" },
+      token: new ConstantToken("JAZ_BAR1"),
       consumed: 8,
     });
   });

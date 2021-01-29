@@ -1,6 +1,6 @@
 import { Feature } from ".";
 import { LexResult, Token } from "../lex";
-import { CompleteNfa, Nfa } from "../nfa";
+import { Nfa } from "../nfa";
 import { Ast, ParseResult } from "../parse";
 import { ReadExReferenceError } from "../util.ts/errors";
 
@@ -21,37 +21,30 @@ export class ConstantsFeature implements Feature {
       return null;
     }
 
-    const [value] = code.match(/^\w+/)!;
+    const [name] = code.match(/^\w+/)!;
 
     return {
-      token: {
-        type: "CONSTANT",
-        value,
-      },
-      consumed: value.length,
+      token: new ConstantToken(name),
+      consumed: name.length,
     };
   }
 
   parseTerm(tokens: Token[]): ParseResult<ConstantAst> {
     const firstToken = tokens[0];
-    if (!isConstantToken(firstToken)) {
+    if (!(firstToken instanceof ConstantToken)) {
       return null;
     }
 
     return {
-      ast: new ConstantAst(firstToken.value),
+      ast: new ConstantAst(firstToken.name),
       consumed: 1,
     };
   }
 }
 
-export interface ConstantToken extends Token {
-  type: "CONSTANT";
-  value: string;
-}
-
-function isConstantToken(token: Token): token is ConstantToken {
-  return token.type === "CONSTANT";
+export class ConstantToken implements Token {
+  readonly type = "CONSTANT";
+  constructor(public name: string) {}
 }
 
 export class ConstantAst implements Ast {
@@ -67,17 +60,17 @@ export class ConstantAst implements Ast {
 }
 
 export class ConstantNfa implements Nfa {
-  constructor(public matcher: Matcher) {}
+  constructor(public matcher: Matcher | null) {}
 
   executeStep(char: string): Nfa[] {
-    if (this.matcher(char)) {
-      return [new CompleteNfa()];
+    if (this.matcher && this.matcher(char)) {
+      return [new ConstantNfa(null)];
     } else {
       return [];
     }
   }
 
   isMatch(): boolean {
-    return false;
+    return this.matcher === null;
   }
 }

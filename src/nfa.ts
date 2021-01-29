@@ -3,16 +3,6 @@ export interface Nfa {
   isMatch(): boolean;
 }
 
-export class CompleteNfa implements Nfa {
-  executeStep(_char: string): Nfa[] {
-    return [];
-  }
-
-  isMatch(): boolean {
-    return true;
-  }
-}
-
 export function executeNfa(nfa: Nfa, input: string): boolean {
   let currentStates: Nfa[] = [nfa];
   let nextStates: Nfa[] = [];
