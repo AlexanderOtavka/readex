@@ -45,12 +45,14 @@ export class CatenationNfa implements Nfa {
   constructor(public left: Nfa, public right: Nfa) {}
 
   executeStep(char: string): Nfa[] {
-    if (this.left.isMatch()) {
-      return this.right.executeStep(char);
-    } else {
-      return this.left
+    const leftBranches = this.left
         .executeStep(char)
         .map((steppedLeft) => new CatenationNfa(steppedLeft, this.right));
+
+    if (this.left.isMatch()) {
+      return [...leftBranches, ...this.right.executeStep(char)];
+    } else {
+      return leftBranches
     }
   }
 
