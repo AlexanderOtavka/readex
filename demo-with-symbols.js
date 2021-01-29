@@ -111,9 +111,9 @@ const ip = readex`
 `
 
 const email = readex`
-    <username>(${username}) "@" <tail>(
-        | <domain>(${domain})
-        | <ip>(${ip})
+    <username>${username} "@" <tail>(
+        | <domain>${domain}
+        | <ip>${ip}
     )
 `
 
