@@ -64,7 +64,7 @@ const domainSegment = readex`${alphanumeric} *("-" ${alphanumeric})`
 const domain = readex`1+(${domainSegment} ".") ${domainSegment}`
 
 // (?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))
-// const ipSegment = readex`
+// const ipNumber = readex`
 //     | "2" (
 //         | "5"     "0"-"5"
 //         | "0"-"4" "0"-"9"
