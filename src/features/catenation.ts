@@ -6,7 +6,7 @@ import { Ast, ParseResult, ParserMap } from "../parse";
 export class CatenationFeature implements Feature {
   isInfixOperator = true;
 
-  parseExpression(
+  parseCatenation(
     tokens: Token[],
     parsers: ParserMap
   ): ParseResult<CatenationAst | Ast> {
@@ -16,12 +16,12 @@ export class CatenationFeature implements Feature {
     }
 
     const rightTokens = tokens.slice(leftResult.consumed);
-    const rightResult = parsers.parseExpression(rightTokens, parsers);
+    const rightResult = parsers.parseCatenation(rightTokens, parsers);
     if (!rightResult) {
       // This is a shortcut, since we may have done a lot of work parsing
       // leftResult, we return it instead of null. However, it will skip any
       // attempts to parse further features, so we need to make sure
-      // CatenationFeature is at the back of the line for expression parsers in
+      // CatenationFeature is at the back of the line for catenation parsers in
       // features/index.ts
       return leftResult;
     }

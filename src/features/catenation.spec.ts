@@ -3,11 +3,11 @@ import { parserMap } from "../parse";
 import { CatenationAst, CatenationFeature } from "./catenation";
 import { ConstantAst } from "./constants";
 
-describe("CatenationFeature.parseExpression", () => {
+describe("CatenationFeature.parseCatenation", () => {
   const feature = new CatenationFeature();
 
   it("should parse a constant catted with a constant", () => {
-    expect(feature.parseExpression(lex("wordChar digit"), parserMap)).toEqual({
+    expect(feature.parseCatenation(lex("wordChar digit"), parserMap)).toEqual({
       ast: new CatenationAst(
         new ConstantAst("wordChar"),
         new ConstantAst("digit")
@@ -18,7 +18,7 @@ describe("CatenationFeature.parseExpression", () => {
 
   it("should parse a three catted constants", () => {
     expect(
-      feature.parseExpression(lex("wordChar whitespace digit"), parserMap)
+      feature.parseCatenation(lex("wordChar whitespace digit"), parserMap)
     ).toEqual({
       ast: new CatenationAst(
         new ConstantAst("wordChar"),
@@ -32,7 +32,7 @@ describe("CatenationFeature.parseExpression", () => {
   });
 
   it("should shortcut when there is no catenation", () => {
-    expect(feature.parseExpression(lex("wordChar"), parserMap)).toEqual({
+    expect(feature.parseCatenation(lex("wordChar"), parserMap)).toEqual({
       ast: new ConstantAst("wordChar"),
       consumed: 1,
     });

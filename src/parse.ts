@@ -19,6 +19,7 @@ export type Parser<T extends Ast = Ast> = (
 
 export interface ParserMap {
   parseExpression: Parser;
+  parseCatenation: Parser;
   parseTerm: Parser;
 }
 
@@ -26,6 +27,12 @@ const expressionParsers: Parser[] = features
   .filter((feature) => feature.parseExpression)
   .map((feature) => (tokens, parserMap) =>
     feature.parseExpression!(tokens, parserMap)
+  );
+
+const catenationParsers: Parser[] = features
+  .filter((feature) => feature.parseCatenation)
+  .map((feature) => (tokens, parserMap) =>
+    feature.parseCatenation!(tokens, parserMap)
   );
 
 const termParsers: Parser[] = features
@@ -38,7 +45,13 @@ export const parserMap: ParserMap = {
   parseExpression: (tokens, parserMap) =>
     parseWithParsers(
       tokens,
-      [...expressionParsers, parserMap.parseTerm],
+      [...expressionParsers, parserMap.parseCatenation],
+      parserMap
+    ),
+  parseCatenation: (tokens, parserMap) =>
+    parseWithParsers(
+      tokens,
+      [...catenationParsers, parserMap.parseTerm],
       parserMap
     ),
   parseTerm: (tokens, parserMap) =>
